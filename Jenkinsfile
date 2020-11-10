@@ -8,27 +8,27 @@ pipeline {
         stage("Test") {
             steps {
                 script {
-                    echo "$BUILD_NUMBE $PROJECTDIR $WORKSPACE"
+                    echo "${BUILD_NUMBE} ${PROJECTDIR} ${WORKSPACE}"
                     // Building the Docker image
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    dockerImage = docker.build registry + ":${BUILD_NUMBER}"
 
                     try {
                         dockerImage.inside() {
                             // Extracting the PROJECTDIR environment variable from inside the container
-                            def PROJECTDIR = sh(script: 'echo \$PROJECTDIR', returnStdout: true).trim()
+                            def PROJECTDIR = sh(script: 'echo \${PROJECTDIR}', returnStdout: true).trim()
 
                             // Copying the project into our workspace
-                            sh "cp -r '$PROJECTDIR' '$WORKSPACE'"
+                            sh "cp -r '${PROJECTDIR}' '${WORKSPACE}'"
 
                             // Running the tests inside the new directory
-                            dir("$WORKSPACE$PROJECTDIR") {
+                            dir("${WORKSPACE}${PROJECTDIR}") {
                                 sh "npm test"
                             }
                         }
 
                     } finally {
                         // Removing the docker image
-                        sh "docker rmi $registry:$BUILD_NUMBER"
+                        sh "docker rmi ${registry}:${BUILD_NUMBER}"
                     }
                 }
             }
