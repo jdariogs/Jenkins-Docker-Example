@@ -8,6 +8,7 @@ pipeline {
         stage("Test") {
             steps {
                 script {
+                    echo "$BUILD_NUMBE $PROJECTDIR $WORKSPACE"
                     // Building the Docker image
                     dockerImage = docker.build registry + ":$BUILD_NUMBER"
 
