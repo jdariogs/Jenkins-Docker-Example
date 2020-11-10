@@ -1,7 +1,7 @@
 pipeline {
     environment {
         // This registry is important for removing the image after the tests
-        registry = "jdari/nodeapp"
+        registry = "dariog/nodeapp"
     }
     agent any
     stages {
